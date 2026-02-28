@@ -15,13 +15,8 @@ public class PlayerController : MonoBehaviour, IUnitController
     }
     void Start()
     {
-        InputManager.Instance.OnGridTouch += HandleGridTouch;
-        InputManager.Instance.OnCancelButton += HandleCancelButton;
-    }
-    void OnDestroy()
-    {
-        InputManager.Instance.OnGridTouch -= HandleGridTouch;
-        InputManager.Instance.OnCancelButton -= HandleCancelButton;
+        unit.OnGridTouch += HandleGridTouch;
+        unit.OnCancelButton += HandleCancelButton;
     }
     void HandleGridTouch(Vector2Int gridPos)
     {
@@ -57,7 +52,7 @@ public class PlayerController : MonoBehaviour, IUnitController
         {
             unit.ChangePhase(Phase.Attack);
         }
-        if (unit.currentPhase == Phase.Attack)
+        else if (unit.currentPhase == Phase.Attack)
         {
             unit.ChangePhase(Phase.Done);
             unit.EndTurn();

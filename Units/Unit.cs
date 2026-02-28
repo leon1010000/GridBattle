@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,8 @@ public class Unit : MonoBehaviour
     [Header("Unchangable")]
     public Phase currentPhase = Phase.Done;
     public bool isMyTurn = false;
+    public event Action<Vector2Int> OnGridTouch;
+    public event Action OnCancelButton;
     private IUnitController controller;
     void Awake()
     {
@@ -29,7 +32,6 @@ public class Unit : MonoBehaviour
 
     public void StartTurn()
     {
-        //if (team == Team.Enemy) EnemyAction();
         controller?.TakeTurn();
     }
     public void EndTurn()
@@ -96,5 +98,13 @@ public class Unit : MonoBehaviour
             if (GridManager.Instance.IsInsideGrid(position)) positions.Add(position);
         }
         return positions;
+    }
+    public void HandleGridTouch(Vector2Int gridPos)
+    {
+        OnGridTouch?.Invoke(gridPos);
+    }
+    public void HandleCancelButton()
+    {
+        OnCancelButton?.Invoke();
     }
 }

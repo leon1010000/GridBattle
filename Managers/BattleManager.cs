@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Xml.XPath;
 using System.Linq;
+using System.Runtime.InteropServices;
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
@@ -20,6 +21,8 @@ public class BattleManager : MonoBehaviour
     {
         SortTurnOrder();
         StartTurn();
+        InputManager.Instance.OnGridTouch += HandleGridTouch;
+        InputManager.Instance.OnCancelButton += HandleCancelButton;
     }
     public void RegisterUnit(Unit unit)
     {
@@ -53,5 +56,15 @@ public class BattleManager : MonoBehaviour
         if (currentTurnIndex >= turnOrder.Count) currentTurnIndex = 0;
         if (currentTurnIndex == 0) SortTurnOrder();
         StartTurn();
+    }
+    void HandleGridTouch(Vector2Int gridPos)
+    {
+        Unit currentUnit = turnOrder[currentTurnIndex];
+        currentUnit.HandleGridTouch(gridPos);
+    }
+    void HandleCancelButton()
+    {
+        Unit currentUnit = turnOrder[currentTurnIndex];
+        currentUnit.HandleCancelButton();
     }
 }
