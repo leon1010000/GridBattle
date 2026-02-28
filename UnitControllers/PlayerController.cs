@@ -53,11 +53,15 @@ public class PlayerController : MonoBehaviour, IUnitController
     void HandleCancelButton()
     {
         if (unit == null || !unit.isMyTurn) return;
+        if (unit.currentPhase == Phase.Move)
+        {
+            unit.ChangePhase(Phase.Attack);
+        }
         if (unit.currentPhase == Phase.Attack)
         {
             unit.ChangePhase(Phase.Done);
             unit.EndTurn();
         }
     }
-    
+
 }
